@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Success</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .success-page {
+      text-align: center;
+      max-width: 500px;
+      margin: 5vh auto;
+      background: #fff;
+      padding: 3rem 2rem 2.5rem 2rem;
+      border-radius: 18px;
+      box-shadow: 0 4px 32px rgba(39, 174, 96, 0.18);
+      position: relative;
+      overflow: hidden;
+    }
+    .success-icon {
+      font-size: 4rem;
+      color: #27ae60;
+      margin-bottom: 1.2rem;
+      animation: pop 0.7s cubic-bezier(.39,.575,.56,1.000);
+    }
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      80% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .success-page h1 {
+      color: #27ae60;
+      font-size: 2.2rem;
+      margin-bottom: 0.7rem;
+    }
+    .success-page p {
+      color: #444;
+      font-size: 1.15rem;
+      margin-bottom: 1.5rem;
+    }
+    .actions {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .actions a {
+      background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+      color: #fff;
+      padding: 0.9rem 2.2rem;
+      border-radius: 8px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 2px 16px rgba(39,174,96,0.18);
+      transition: background 0.3s, transform 0.2s;
+    }
+    .actions a:hover {
+      background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+      transform: scale(1.04);
+    }
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-page">
+    <canvas class="confetti"></canvas>
+    <div class="success-icon"><i class="fa fa-check-circle"></i></div>
+    <h1>Payment Successful!</h1>
+    <p>Thank you for your purchase. Your order has been placed and will be processed soon.<br>We hope you enjoy your shopping experience with us!</p>
+    <div class="actions">
+      <a href="/orders"><i class="fa fa-box"></i> View Orders</a>
+      <a href="/products"><i class="fa fa-shopping-bag"></i> Continue Shopping</a>
+      <a href="/" style="background:linear-gradient(90deg,#3498db 0%,#6dd5ed 100%);"><i class="fa fa-home"></i> Home</a>
+    </div>
+  </div>
+  <script>
+    // Simple confetti animation
+    const canvas = document.querySelector('.confetti');
+    const ctx = canvas.getContext('2d');
+    function resize() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+    const colors = ['#27ae60','#2ecc71','#3498db','#f1c40f','#e67e22','#e74c3c'];
+    let confetti = [];
+    for(let i=0;i<60;i++){
+      confetti.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        r: Math.random()*8+4,
+        c: colors[Math.floor(Math.random()*colors.length)],
+        d: Math.random()*2+1
+      });
+    }
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(let i=0;i<confetti.length;i++){
+        ctx.beginPath();
+        ctx.arc(confetti[i].x,confetti[i].y,confetti[i].r,0,2*Math.PI);
+        ctx.fillStyle=confetti[i].c;
+        ctx.fill();
+        confetti[i].y+=confetti[i].d;
+        if(confetti[i].y>canvas.height){
+          confetti[i].y=0;
+          confetti[i].x=Math.random()*canvas.width;
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+</html> 

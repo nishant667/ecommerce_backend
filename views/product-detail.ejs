@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= product.name %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .detail-main { max-width: 950px; margin: 4vh auto; background: #fff; border-radius: 18px; box-shadow: 0 4px 32px rgba(44,62,80,0.10); display: flex; gap: 2.5rem; padding: 2.5rem 2rem; align-items: flex-start; }
+    .detail-img-wrap { flex: 1; display: flex; align-items: center; justify-content: center; background: #f6f8fa; border-radius: 14px; min-width: 280px; min-height: 340px; position: relative; }
+    .detail-img { max-width: 90%; max-height: 340px; object-fit: contain; border-radius: 12px; box-shadow: 0 2px 12px rgba(44,62,80,0.07); }
+    .badge { position: absolute; top: 18px; left: 18px; background: #27ae60; color: #fff; padding: 0.3rem 0.9rem; border-radius: 12px; font-size: 0.98rem; font-weight: 600; z-index: 2; }
+    .badge.best { left: auto; right: 18px; background: #e67e22; }
+    .badge.discount { top: 54px; left: 18px; background: #e74c3c; }
+    .badge.prime { top: auto; bottom: 18px; left: 18px; background: #2e86de; }
+    .detail-info { flex: 2; display: flex; flex-direction: column; gap: 1.2rem; }
+    .detail-title { font-size: 2.1rem; font-weight: 700; color: #222; margin-bottom: 0.2rem; }
+    .detail-category { color: #3498db; font-weight: 600; font-size: 1.08rem; margin-bottom: 0.5rem; }
+    .detail-rating { display: flex; align-items: center; gap: 0.2rem; font-size: 1.15rem; margin-bottom: 0.5rem; }
+    .detail-rating .fa-star { color: #f1c40f; }
+    .detail-rating .fa-star.empty { color: #ddd; }
+    .detail-rating .review-count { color: #888; font-size: 1.02rem; margin-left: 0.5rem; }
+    .detail-price { font-size: 1.6rem; font-weight: 700; color: #27ae60; margin-bottom: 0.2rem; }
+    .detail-old-price { font-size: 1.15rem; color: #888; text-decoration: line-through; margin-left: 0.7rem; }
+    .detail-discount { color: #e74c3c; font-weight: 600; margin-left: 0.5rem; font-size: 1.15rem; }
+    .detail-stock { font-size: 1.08rem; font-weight: 600; color: #27ae60; margin-bottom: 0.5rem; }
+    .detail-stock.low { color: #e67e22; }
+    .detail-stock.out { color: #e74c3c; }
+    .delivery-badge { display: inline-block; background: #2e86de; color: #fff; font-size: 0.98rem; border-radius: 8px; padding: 0.2rem 0.7rem; margin-top: 0.3rem; }
+    .detail-desc { color: #444; font-size: 1.13rem; line-height: 1.7; margin-bottom: 1.2rem; }
+    .detail-actions { display: flex; gap: 1.2rem; margin-top: 1.2rem; }
+    .add-cart-btn { flex: 1; background: linear-gradient(90deg, #3498db 0%, #6dd5ed 100%); color: #fff; padding: 1rem 2.5rem; border-radius: 8px; font-size: 1.15rem; font-weight: 600; box-shadow: 0 2px 8px rgba(52,152,219,0.10); text-decoration: none; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.7rem; }
+    .add-cart-btn:hover { background: linear-gradient(90deg, #6dd5ed 0%, #3498db 100%); transform: scale(1.04); }
+    .wishlist-btn { background: #fff; border: 1.5px solid #e74c3c; color: #e74c3c; border-radius: 50%; width: 48px; height: 48px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(44,62,80,0.10); cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .wishlist-btn.active, .wishlist-btn:hover { background: #e74c3c; color: #fff; }
+    @media (max-width: 900px) { .detail-main { flex-direction: column; gap: 1.5rem; padding: 1.5rem 0.5rem; } .detail-img-wrap { min-width: 100%; min-height: 220px; } }
+  </style>
+  <script>
+    function toggleWishlist(btn) { btn.classList.toggle('active'); btn.title = btn.classList.contains('active') ? 'Remove from Wishlist' : 'Add to Wishlist'; }
+  </script>
+</head>
+<body>
+  <div class="detail-main">
+    <div class="detail-img-wrap">
+      <% if (product.imageUrl) { %>
+        <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="detail-img">
+      <% } %>
+      <% if (product.isNew) { %>
+        <span class="badge">New</span>
+      <% } %>
+      <% if (product.isBestSeller) { %>
+        <span class="badge best">Best Seller</span>
+      <% } %>
+      <% if (product.discount) { %>
+        <span class="badge discount">-<%= product.discount %>%</span>
+      <% } %>
+      <% if (product.isPrime) { %>
+        <span class="badge prime"><i class="fa fa-bolt"></i> Express</span>
+      <% } %>
+      <button class="wishlist-btn" title="Add to Wishlist" onclick="toggleWishlist(this)"><i class="fa fa-heart"></i></button>
+    </div>
+    <div class="detail-info">
+      <div class="detail-category"><%= product.category %><% if (product.subcategory) { %> &middot; <%= product.subcategory %><% } %></div>
+      <div class="detail-title"><%= product.name %></div>
+      <div class="detail-rating">
+        <% let rating = product.rating || 4; %>
+        <% for (let i = 1; i <= 5; i++) { %>
+          <% if (i <= rating) { %>
+            <i class="fa fa-star"></i>
+          <% } else { %>
+            <i class="fa fa-star empty"></i>
+          <% } %>
+        <% } %>
+        <span class="review-count">(<%= product.reviews || Math.floor(Math.random()*200+10) %> reviews)</span>
+      </div>
+      <div>
+        <span class="detail-price">₹<%= product.price %></span>
+        <% if (product.oldPrice) { %>
+          <span class="detail-old-price">₹<%= product.oldPrice %></span>
+        <% } %>
+        <% if (product.discount) { %>
+          <span class="detail-discount">-<%= product.discount %>%</span>
+        <% } %>
+      </div>
+      <% if (product.stock && product.stock < 10 && product.stock > 0) { %>
+        <div class="detail-stock low">Only <%= product.stock %> left!</div>
+      <% } else if (product.stock === 0) { %>
+        <div class="detail-stock out">Out of Stock</div>
+      <% } else { %>
+        <div class="detail-stock">In Stock</div>
+      <% } %>
+      <% if (product.isPrime) { %>
+        <div class="delivery-badge"><i class="fa fa-bolt"></i> Express Delivery</div>
+      <% } %>
+      <div class="detail-desc"><%= product.description %></div>
+      <div class="detail-actions">
+        <form action="/cart/add" method="POST" style="flex:1;">
+          <input type="hidden" name="productId" value="<%= product._id %>">
+          <label for="quantity">Quantity:</label>
+          <input type="number" id="quantity" name="quantity" value="1" min="1" style="width: 60px; margin:0 0.7rem;" <% if (product.stock === 0) { %>disabled<% } %>>
+          <button type="submit" class="add-cart-btn" <% if (product.stock === 0) { %>disabled style="background:#ccc;color:#fff;cursor:not-allowed;"<% } %>><i class="fa fa-cart-plus"></i> <% if (product.stock === 0) { %>Out of Stock<% } else { %>Add to Cart<% } %></button>
+        </form>
+        <button class="wishlist-btn" title="Add to Wishlist" onclick="toggleWishlist(this)"><i class="fa fa-heart"></i></button>
+      </div>
+      <div style="margin-top:1.5rem;">
+        <a href="/products" class="btn" style="background:#3498db;color:#fff;padding:0.7rem 2rem;border-radius:8px;font-size:1.08rem;"><i class="fa fa-arrow-left"></i> Back to Products</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

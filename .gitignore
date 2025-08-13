@@ -1,0 +1,21 @@
+# Node.js dependencies
+node_modules/
+# Environment variables
+.env
+# Logs
+logs
+*.log
+npm-debug.log*
+# IDE settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+# Temporary files
+*.tmp
+*.temp
+# Lock files (optional if using multiple package managers)
+package-lock.json
+

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Failed</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="failed-page">
+    <h1>❌ Payment Failed</h1>
+    
+    <div class="error-message">
+      <p><%= message %></p>
+      <p>Don't worry, your cart items are still saved.</p>
+    </div>
+    
+    <div class="actions">
+      <a href="/cart" class="btn">Back to Cart</a>
+      <a href="/products" class="btn">Continue Shopping</a>
+    </div>
+  </div>
+</body>
+</html> 

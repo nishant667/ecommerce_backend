@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="main-content" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f6f8fa;">
+    <div class="login-form-container" style="max-width:420px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;">
+        <div class="user-avatar" style="width:64px;height:64px;font-size:2rem;">
+          <%= user.username.charAt(0).toUpperCase() %>
+        </div>
+        <h1 style="margin-bottom:0.5rem;">Profile</h1>
+        <div style="width:100%;text-align:left;">
+          <p><strong>Username:</strong> <%= user.username %></p>
+          <p><strong>Email:</strong> <%= user.email %></p>
+          <p><strong>Member since:</strong> <%= user.createdAt.toLocaleDateString() %></p>
+        </div>
+        <div style="width:100%;display:flex;justify-content:space-between;margin-top:1.5rem;gap:1rem;">
+          <a href="/products" class="btn" style="flex:1;">Back to Products</a>
+          <a href="/logout" class="btn" style="background:#e74c3c;flex:1;">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 
