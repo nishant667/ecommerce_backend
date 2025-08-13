@@ -2,12 +2,12 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
 
-// Serialize user for the session
+// Serialize user
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-// Deserialize user from the session
+// Deserialize user
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
@@ -24,26 +24,19 @@ passport.use(new GoogleStrategy({
   callbackURL: "https://ecommerce-backend-rdtv.onrender.com/auth/google/callback"
 }, async (accessToken, refreshToken, profile, done) => {
   try {
-    // Check if user already exists
     let user = await User.findOne({ googleId: profile.id });
-    
-    if (user) {
-      return done(null, user);
+    if (!user) {
+      user = await User.create({
+        googleId: profile.id,
+        username: profile.displayName,
+        email: profile.emails[0].value,
+        password: 'google-auth-' + Math.random().toString(36).substring(7)
+      });
     }
-    
-    // Create new user if doesn't exist
-    user = new User({
-      googleId: profile.id,
-      username: profile.displayName,
-      email: profile.emails[0].value,
-      password: 'google-auth-' + Math.random().toString(36).substring(7) // Random password for Google users
-    });
-    
-    await user.save();
     return done(null, user);
   } catch (err) {
     return done(err, null);
   }
 }));
 
-module.exports = passport; 
+module.exports = passport;
